@@ -8,6 +8,9 @@ import { chapter06 } from '@/content/chapters/chapter-06-manufacturing-packaging
 import { chapter07 } from '@/content/chapters/chapter-07-power-integrity'
 import { chapter08 } from '@/content/chapters/chapter-08-simulation-interfaces'
 import { chapter09 } from '@/content/chapters/chapter-09-emc-shielding-filtering'
+import { chapter10 } from '@/content/chapters/chapter-10-advanced-stackup'
+import { chapter11 } from '@/content/chapters/chapter-11-digital-rf-mixed-signal'
+import { chapter12 } from '@/content/chapters/chapter-12-multigigabit'
 
 // Chapters are added here as they're authored (see plan: 12 chapters total).
 export const chapters: Chapter[] = [
@@ -20,4 +23,7 @@ export const chapters: Chapter[] = [
   chapter07,
   chapter08,
   chapter09,
+  chapter10,
+  chapter11,
+  chapter12,
 ]
