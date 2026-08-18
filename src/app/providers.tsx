@@ -1,5 +1,6 @@
 import { QueryClientProvider } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
+import { DirectionProvider } from '@radix-ui/react-direction'
 import { RouterProvider } from 'react-router'
 import { Toaster } from '@/components/ui/sonner'
 import { ErrorBoundary } from '@/app/error-boundary'
@@ -12,16 +13,18 @@ import { ProgressProvider } from '@/providers/progress-provider'
 export function Providers() {
   return (
     <ErrorBoundary>
-      <QueryClientProvider client={queryClient}>
-        <ThemeProvider>
-          <ProgressProvider>
-            <RouterProvider router={router} />
-            <Toaster position="top-center" />
-            <PwaUpdatePrompt />
-          </ProgressProvider>
-        </ThemeProvider>
-        {import.meta.env.DEV && <ReactQueryDevtools initialIsOpen={false} />}
-      </QueryClientProvider>
+      <DirectionProvider dir="rtl">
+        <QueryClientProvider client={queryClient}>
+          <ThemeProvider>
+            <ProgressProvider>
+              <RouterProvider router={router} />
+              <Toaster position="top-center" />
+              <PwaUpdatePrompt />
+            </ProgressProvider>
+          </ThemeProvider>
+          {import.meta.env.DEV && <ReactQueryDevtools initialIsOpen={false} />}
+        </QueryClientProvider>
+      </DirectionProvider>
     </ErrorBoundary>
   )
 }
