@@ -4,24 +4,31 @@ import { VitePWA } from 'vite-plugin-pwa'
 import react, { reactCompilerPreset } from '@vitejs/plugin-react'
 import babel from '@rolldown/plugin-babel'
 
+// Set VITE_BASE_PATH at build time for GitHub Pages project sites, e.g. "/Board-Design-Academy-WEB/".
+// Left as "/" for local dev and any host that serves from the domain root.
+const basePath = process.env.VITE_BASE_PATH || '/'
+
 export default defineConfig({
+  base: basePath,
   plugins: [
     react(),
     babel({ presets: [reactCompilerPreset()] }),
     tailwindcss(),
     VitePWA({
       registerType: 'prompt',
-      includeAssets: ['favicon.ico', 'apple-touch-icon.png'],
+      includeAssets: ['favicon.svg', 'apple-touch-icon.png'],
       manifest: {
-        name: 'Board Design Academy',
-        short_name: 'BDA',
+        name: 'אקדמיית תכנון לוחות',
+        short_name: 'אקדמיית לוחות',
         description:
-          'A personal, in-depth course on high-speed PCB design: signal integrity, power integrity, EMC, and layout.',
+          'קורס עומק אישי בתכנון PCB במהירות גבוהה: שלמות אות, שלמות הספק, תאימות EMC וסידור פיזי.',
+        lang: 'he',
+        dir: 'rtl',
         theme_color: '#0f172a',
         background_color: '#0f172a',
         display: 'standalone',
-        scope: '/',
-        start_url: '/',
+        scope: basePath,
+        start_url: basePath,
         icons: [
           { src: 'pwa-192x192.png', sizes: '192x192', type: 'image/png' },
           { src: 'pwa-512x512.png', sizes: '512x512', type: 'image/png' },
@@ -31,7 +38,7 @@ export default defineConfig({
       workbox: {
         globPatterns: ['**/*.{js,css,html,ico,png,svg,woff2}'],
         cleanupOutdatedCaches: true,
-        navigateFallback: '/index.html',
+        navigateFallback: `${basePath}index.html`,
         runtimeCaching: [
           {
             // Gemini AI panel: never cached, never served stale, no offline support by design.
