@@ -60,7 +60,7 @@ export function Component() {
           </span>
         )}
         <ExamHistorySheet chapterId={chapter.id} chapterTitle={chapter.title}>
-          <Button variant="ghost" size="sm" className="gap-1.5">
+          <Button variant="ghost" className="gap-1.5">
             <History className="size-4" aria-hidden="true" />
             היסטוריית מבחנים
           </Button>

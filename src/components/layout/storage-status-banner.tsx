@@ -24,7 +24,7 @@ export function StorageStatusBanner() {
         size="icon"
         onClick={() => setDismissed(true)}
         aria-label="סגירת ההודעה"
-        className="size-8 shrink-0"
+        className="shrink-0"
       >
         <X className="size-4" aria-hidden="true" />
       </Button>

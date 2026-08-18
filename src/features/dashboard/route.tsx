@@ -84,11 +84,11 @@ export function DashboardRoute() {
                 </div>
                 <div className="flex shrink-0 gap-2">
                   {unlocked ? (
-                    <Button asChild size="sm">
+                    <Button asChild>
                       <Link to={`/chapters/${chapter.id}`}>מעבר לפרק</Link>
                     </Button>
                   ) : (
-                    <Button size="sm" variant="outline" onClick={() => unlockChapter(chapter.id)}>
+                    <Button variant="outline" onClick={() => unlockChapter(chapter.id)}>
                       דילוג קדימה ופתיחה
                     </Button>
                   )}

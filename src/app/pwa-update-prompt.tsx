@@ -24,11 +24,11 @@ export function PwaUpdatePrompt() {
       <p className="text-sm">{needRefresh ? 'גרסה חדשה של האפליקציה זמינה.' : 'האפליקציה מוכנה לעבודה במצב לא מקוון.'}</p>
       <div className="mt-3 flex gap-2">
         {needRefresh && (
-          <Button size="sm" onClick={() => updateServiceWorker(true)}>
+          <Button onClick={() => updateServiceWorker(true)}>
             רענון וטעינת הגרסה החדשה
           </Button>
         )}
-        <Button size="sm" variant="ghost" onClick={dismiss}>
+        <Button variant="ghost" onClick={dismiss}>
           סגירה
         </Button>
       </div>
