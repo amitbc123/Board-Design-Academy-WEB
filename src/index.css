@@ -30,7 +30,7 @@
   --destructive-foreground: oklch(0.98 0.005 25);
 
   /* Success: chapter/topic completion */
-  --success: oklch(0.55 0.14 155);
+  --success: oklch(0.44 0.14 155);
   --success-foreground: oklch(0.98 0.01 155);
 
   /* Interview callout: distinct warm accent, never reused elsewhere */
