@@ -74,7 +74,7 @@ export function LessonRunner({ lessonId, onBack, onOpenLesson }: { lessonId: num
   const revContext: RevTipContext = current?.k === 'quiz' ? 'quiz' : current?.k === 'pcb' ? 'pcb' : current?.k === 'gerber' ? 'gerber' : 'build'
 
   return (
-    <div className="mx-auto flex max-w-[1220px] flex-col gap-4">
+    <div className="mx-auto flex max-w-[1220px] flex-col gap-4 pb-20">
       <div className="flex items-center gap-3 border-b pb-3">
         <button type="button" onClick={onBack} aria-label="חזרה למסלול" className="grid size-9 shrink-0 place-items-center rounded-lg border transition-colors hover:border-primary">
           <ArrowRightIcon className="size-4" />
