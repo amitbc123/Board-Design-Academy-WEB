@@ -5,7 +5,7 @@ import { ComponentTray } from './component-tray'
 import { SchematicCanvas } from './schematic-canvas'
 import { Scope } from './scope'
 import { VerdictList } from './verdict-list'
-import { BigReadouts, DatasheetPanel, MetersPanel, NetsTable } from './schematic-panels'
+import { BigReadouts, DatasheetPanel, MetersPanel, NetsTable, ValueQuickPicker } from './schematic-panels'
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
 import { ChevronDownIcon, RotateCwIcon, Undo2Icon, RefreshCwIcon } from 'lucide-react'
 import { cn } from '@/lib/utils'
@@ -67,6 +67,7 @@ export function BuildStep({ lesson, onPassed }: { lesson: Lesson; onPassed: () =
               אמת מעגל
             </button>
           </div>
+          <ValueQuickPicker ui={ui} />
           <SchematicCanvas ui={ui} />
         </div>
 

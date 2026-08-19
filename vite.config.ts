@@ -1,3 +1,4 @@
+import { fileURLToPath } from 'node:url'
 import { defineConfig } from 'vite'
 import tailwindcss from '@tailwindcss/vite'
 import { VitePWA } from 'vite-plugin-pwa'
@@ -67,7 +68,7 @@ export default defineConfig({
     }),
   ],
   resolve: {
-    alias: { '@': new URL('./src', import.meta.url).pathname },
+    alias: { '@': fileURLToPath(new URL('./src', import.meta.url)) },
   },
   build: {
     sourcemap: false,

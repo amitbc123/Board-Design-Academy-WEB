@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import type { Lesson, MosfetPart, ResistorPart } from '../engine/types'
+import type { AnyPart, Lesson, MosfetPart, ResistorPart } from '../engine/types'
 import type { UseSchematicResult } from '../state/use-schematic'
 import { fmtI, fmtP, fmtR, fmtV } from '../engine/format'
 import { pinLevel } from '../engine/checks'
@@ -7,6 +7,54 @@ import { runTransient } from '../engine/transient'
 import { PARTS } from '../data/parts'
 import { LIB } from '../data/symbols'
 import { cn } from '@/lib/utils'
+
+/** Short value label for a catalog entry — "220 Ω", "2.2 V", "100 nF" — used by both the quick picker and the datasheet's swap list. */
+function partValueLabel(opt: AnyPart): string {
+  if ('R' in opt) return fmtR(opt.R)
+  if ('Vf' in opt) return `${opt.Vf} V`
+  if ('C' in opt) return opt.C >= 1e-6 ? `${opt.C * 1e6} µF` : `${opt.C * 1e9} nF`
+  return ''
+}
+
+/**
+ * A one-tap value swap strip shown right next to the canvas whenever the
+ * selected component has more than one catalog option (resistors, caps,
+ * LED colours). Exists so changing a value doesn't require finding and
+ * opening the "Details" disclosure below the fold — the single biggest
+ * source of "I can't edit the component value" confusion, especially on
+ * a phone where that disclosure sits several screens down.
+ */
+export function ValueQuickPicker({ ui }: { ui: UseSchematicResult }) {
+  const { state, dispatch } = ui
+  const c = state.sel ? state.comps.find((x) => x.id === state.sel) : null
+  if (!c || LIB[c.type].fixed || !c.part) return null
+  const dbKey = LIB[c.type].db
+  const options = dbKey ? PARTS[dbKey] : []
+  if (options.length <= 1) return null
+  const P = c.part
+
+  return (
+    <div className="flex items-center gap-1.5 overflow-x-auto border-b border-[#1E4470] bg-[#0f1f38] px-2.5 py-2">
+      <span className="shrink-0 font-mono text-[10px] font-bold uppercase tracking-wide text-[#6E8CAC]">{c.id} · ערך</span>
+      {options.map((opt) => {
+        const active = opt.mpn === P.mpn
+        return (
+          <button
+            key={opt.mpn}
+            type="button"
+            onClick={() => dispatch({ type: 'SET_PART', id: c.id, part: opt })}
+            className={cn(
+              'shrink-0 whitespace-nowrap rounded-full border px-2.5 py-1 font-mono text-[10.5px] font-bold transition-colors',
+              active ? 'border-primary bg-primary text-primary-foreground' : 'border-[#2A3F5F] text-[#9FC0DE] hover:border-primary/60',
+            )}
+          >
+            {partValueLabel(opt)}
+          </button>
+        )
+      })}
+    </div>
+  )
+}
 
 type ReadoutTone = 'ok' | 'warn' | 'bad' | 'n'
 
@@ -182,7 +230,7 @@ export function DatasheetPanel({ ui }: { ui: UseSchematicResult }) {
           <div className="mb-1.5 border-t pt-2 font-mono text-[9px] font-bold uppercase tracking-wide text-muted-foreground">בחר רכיב</div>
           <div className="flex flex-col gap-1">
             {options.map((opt) => {
-              const sec = 'R' in opt ? fmtR((opt as ResistorPart).R) : 'Vf' in opt ? `${opt.Vf} V` : 'C' in opt ? ((opt as { C: number }).C >= 1e-6 ? `${(opt as { C: number }).C * 1e6} µF` : `${(opt as { C: number }).C * 1e9} nF`) : ''
+              const sec = partValueLabel(opt)
               const active = opt.mpn === P.mpn
               return (
                 <button

@@ -68,7 +68,7 @@ export function TrailView({ onSelectLesson }: { onSelectLesson: (lesson: Lesson)
   const litLength = Math.max(1, height * 1.35) * (1 - Math.max(0.02, doneCount / PRACTICAL.length))
 
   return (
-    <div className="mx-auto flex max-w-2xl flex-col gap-1">
+    <div className="mx-auto flex max-w-2xl flex-col gap-1 pb-20">
       <div className="mb-1 flex items-center justify-between gap-2">
         <div>
           <h1 className="text-2xl font-semibold tracking-tight sm:text-3xl">הנדסת חומרה, שלב אחר שלב</h1>
