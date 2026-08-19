@@ -153,6 +153,18 @@
   --radius-xl: calc(var(--radius) + 4px);
 }
 
+/* Rev bot mascot (beginner path) */
+@keyframes beginner-blink {
+  0%,
+  92%,
+  100% {
+    transform: scaleY(1);
+  }
+  96% {
+    transform: scaleY(0.12);
+  }
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
