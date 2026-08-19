@@ -2,9 +2,6 @@ name: Deploy to GitHub Pages
 
 on:
   push:
-    # Deploys on pushes to either branch so the live site keeps working
-    # through the main/default-branch transition. Once claude/board-design-
-    # academy-3i001h is retired, drop it and keep just [main].
     branches: [main, claude/board-design-academy-3i001h]
   workflow_dispatch: {}
 
