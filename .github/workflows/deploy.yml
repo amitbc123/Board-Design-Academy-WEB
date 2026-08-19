@@ -2,9 +2,10 @@ name: Deploy to GitHub Pages
 
 on:
   push:
-    # This repo's current default branch. If you later rename or switch the
-    # default branch (e.g. to `main`), update this to match.
-    branches: [claude/board-design-academy-3i001h]
+    # Deploys on pushes to either branch so the live site keeps working
+    # through the main/default-branch transition. Once claude/board-design-
+    # academy-3i001h is retired, drop it and keep just [main].
+    branches: [main, claude/board-design-academy-3i001h]
   workflow_dispatch: {}
 
 permissions:
@@ -33,6 +34,7 @@ jobs:
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist
+      - uses: actions/configure-pages@v5
 
   deploy:
     needs: build
