@@ -1,7 +1,8 @@
 import { Link, useLocation } from 'react-router'
-import { Home, Lock, Settings } from 'lucide-react'
+import { Home, Lock, Route as RouteIcon, Settings } from 'lucide-react'
 import { getAllChapters } from '@/content'
 import { useProgress } from '@/providers/progress-provider'
+import { useBeginnerProgress } from '@/providers/beginner-progress-provider'
 import { Progress } from '@/components/ui/progress'
 import { Separator } from '@/components/ui/separator'
 import { cn } from '@/lib/utils'
@@ -9,6 +10,7 @@ import { cn } from '@/lib/utils'
 export function NavContent({ onNavigate }: { onNavigate?: () => void }) {
   const chapters = getAllChapters()
   const { overallCompletionPercent, isChapterUnlocked, completedTopicCountForChapter } = useProgress()
+  const beginnerProgress = useBeginnerProgress()
   const location = useLocation()
 
   return (
@@ -32,6 +34,29 @@ export function NavContent({ onNavigate }: { onNavigate?: () => void }) {
           </div>
           <Progress value={overallCompletionPercent} aria-label="התקדמות כוללת בקורס" />
         </div>
+      </div>
+
+      <Separator />
+
+      <div className="px-1">
+        <Link
+          to="/beginner"
+          onClick={onNavigate}
+          className={cn(
+            'flex min-h-11 items-center justify-between gap-2 rounded-md px-2 text-sm font-medium transition-colors hover:bg-accent',
+            location.pathname.startsWith('/beginner') && 'bg-accent',
+          )}
+        >
+          <span className="flex items-center gap-2">
+            <RouteIcon className="size-4 shrink-0 text-primary" aria-hidden="true" />
+            מסלול למתחילים
+          </span>
+          {beginnerProgress.totalPractical > 0 && (
+            <span className="shrink-0 text-xs text-muted-foreground">
+              {beginnerProgress.completedCount}/{beginnerProgress.totalPractical}
+            </span>
+          )}
+        </Link>
       </div>
 
       <Separator />

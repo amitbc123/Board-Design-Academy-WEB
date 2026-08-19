@@ -27,6 +27,14 @@ export interface SettingRecord {
   value: string
 }
 
+/** One beginner-path lesson's completion state — separate from the main course's topicProgress. */
+export interface BeginnerLessonRecord {
+  lessonId: number
+  done: boolean
+  skipped: boolean
+  completedAt: string | null
+}
+
 interface ProgressDBSchema extends DBSchema {
   topicProgress: {
     key: string
@@ -42,14 +50,24 @@ interface ProgressDBSchema extends DBSchema {
     key: string
     value: SettingRecord
   }
+  beginnerLessonProgress: {
+    key: number
+    value: BeginnerLessonRecord
+  }
 }
 
 const DB_NAME = 'board-design-academy'
-const DB_VERSION = 1
+const DB_VERSION = 2
 
 export const SETTINGS_KEYS = {
   geminiApiKey: 'geminiApiKey',
   unlockedChapters: 'unlockedChapters',
+  beginnerXp: 'beginnerXp',
+  beginnerStreak: 'beginnerStreak',
+  beginnerLastActiveDay: 'beginnerLastActiveDay',
+  beginnerQuestionsAsked: 'beginnerQuestionsAsked',
+  beginnerQuestionsRight: 'beginnerQuestionsRight',
+  beginnerSeenIntro: 'beginnerSeenIntro',
 } as const
 
 let dbPromise: Promise<IDBPDatabase<ProgressDBSchema>> | null = null
@@ -70,6 +88,9 @@ function getDb(): Promise<IDBPDatabase<ProgressDBSchema>> {
         }
         if (!db.objectStoreNames.contains('settings')) {
           db.createObjectStore('settings', { keyPath: 'key' })
+        }
+        if (!db.objectStoreNames.contains('beginnerLessonProgress')) {
+          db.createObjectStore('beginnerLessonProgress', { keyPath: 'lessonId' })
         }
       },
     })
@@ -159,4 +180,39 @@ export async function resetAllProgress(): Promise<void> {
   const tx = db.transaction(['topicProgress', 'examAttempts'], 'readwrite')
   await Promise.all([tx.objectStore('topicProgress').clear(), tx.objectStore('examAttempts').clear()])
   await tx.done
+}
+
+export async function getAllBeginnerLessonProgress(): Promise<BeginnerLessonRecord[]> {
+  const db = await getDb()
+  return db.getAll('beginnerLessonProgress')
+}
+
+export async function setBeginnerLessonDone(
+  lessonId: number,
+  options: { skipped: boolean },
+): Promise<BeginnerLessonRecord> {
+  const db = await getDb()
+  const record: BeginnerLessonRecord = {
+    lessonId,
+    done: true,
+    skipped: options.skipped,
+    completedAt: new Date().toISOString(),
+  }
+  await db.put('beginnerLessonProgress', record)
+  return record
+}
+
+export async function resetBeginnerProgress(): Promise<void> {
+  const db = await getDb()
+  await db.clear('beginnerLessonProgress')
+  await Promise.all(
+    [
+      SETTINGS_KEYS.beginnerXp,
+      SETTINGS_KEYS.beginnerStreak,
+      SETTINGS_KEYS.beginnerLastActiveDay,
+      SETTINGS_KEYS.beginnerQuestionsAsked,
+      SETTINGS_KEYS.beginnerQuestionsRight,
+      SETTINGS_KEYS.beginnerSeenIntro,
+    ].map((key) => setSetting(key, '')),
+  )
 }

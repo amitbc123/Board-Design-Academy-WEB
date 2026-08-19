@@ -37,6 +37,16 @@ export const router = createBrowserRouter(
           errorElement: <RouteError />,
         },
         {
+          path: 'beginner',
+          lazy: () => import('@/features/beginner/route'),
+          errorElement: <RouteError />,
+        },
+        {
+          path: 'beginner/:lessonId',
+          lazy: () => import('@/features/beginner/lesson-route'),
+          errorElement: <RouteError />,
+        },
+        {
           path: '*',
           lazy: () => import('@/features/not-found/route'),
           errorElement: <RouteError />,

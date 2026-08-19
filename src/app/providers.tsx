@@ -9,6 +9,7 @@ import { PwaUpdatePrompt } from '@/app/pwa-update-prompt'
 import { queryClient } from '@/lib/query-client'
 import { router } from '@/app/router'
 import { ProgressProvider } from '@/providers/progress-provider'
+import { BeginnerProgressProvider } from '@/providers/beginner-progress-provider'
 
 export function Providers() {
   return (
@@ -17,9 +18,11 @@ export function Providers() {
         <QueryClientProvider client={queryClient}>
           <ThemeProvider>
             <ProgressProvider>
-              <RouterProvider router={router} />
-              <Toaster position="top-center" />
-              <PwaUpdatePrompt />
+              <BeginnerProgressProvider>
+                <RouterProvider router={router} />
+                <Toaster position="top-center" />
+                <PwaUpdatePrompt />
+              </BeginnerProgressProvider>
             </ProgressProvider>
           </ThemeProvider>
           {import.meta.env.DEV && <ReactQueryDevtools initialIsOpen={false} />}
