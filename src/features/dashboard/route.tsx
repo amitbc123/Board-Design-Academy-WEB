@@ -1,7 +1,8 @@
 import { Link } from 'react-router'
-import { Lock } from 'lucide-react'
+import { Lock, Route as RouteIcon } from 'lucide-react'
 import { getAllChapters } from '@/content'
 import { useProgress } from '@/providers/progress-provider'
+import { useBeginnerProgress } from '@/providers/beginner-progress-provider'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Progress } from '@/components/ui/progress'
 import { Badge } from '@/components/ui/badge'
@@ -17,6 +18,7 @@ export function DashboardRoute() {
     latestExamAttempt,
     unlockChapter,
   } = useProgress()
+  const beginnerProgress = useBeginnerProgress()
 
   return (
     <div className="mx-auto flex max-w-4xl flex-col gap-6">
@@ -26,6 +28,43 @@ export function DashboardRoute() {
           קורס עומק אישי בתכנון PCB במהירות גבוהה — שלמות אות, שלמות הספק, תאימות EMC וסידור פיזי.
         </p>
       </div>
+
+      <Card className="border-primary/30 bg-primary/[0.04]">
+        <CardContent className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex min-w-0 flex-1 items-start gap-3">
+            <div className="grid size-10 shrink-0 place-items-center rounded-xl bg-primary/15 text-primary">
+              <RouteIcon className="size-5" />
+            </div>
+            <div className="min-w-0">
+              <div className="flex flex-wrap items-center gap-2">
+                <h3 className="font-medium">מסלול למתחילים — לומדים הנדסת חומרה בבנייה</h3>
+                <Badge variant="outline" className="text-primary">
+                  חדש
+                </Badge>
+              </div>
+              <p className="mt-1 text-sm text-muted-foreground">
+                מסלול שלבים מעשי בסגנון Duolingo: תשרטט מעגל, פותר אמיתי יגיד לך מה קורה בפועל, תסדר לוח PCB
+                ותנתב אותו. Rev שואל שאלות בדרך.
+              </p>
+              {beginnerProgress.totalPractical > 0 && (
+                <div className="mt-2 flex items-center gap-2">
+                  <Progress
+                    value={(beginnerProgress.completedCount / beginnerProgress.totalPractical) * 100}
+                    className="h-2 w-40"
+                    aria-label="התקדמות במסלול למתחילים"
+                  />
+                  <span className="text-xs text-muted-foreground">
+                    {beginnerProgress.completedCount}/{beginnerProgress.totalPractical} שלבים
+                  </span>
+                </div>
+              )}
+            </div>
+          </div>
+          <Button asChild className="shrink-0">
+            <Link to="/beginner">מעבר למסלול</Link>
+          </Button>
+        </CardContent>
+      </Card>
 
       <Card>
         <CardHeader>
